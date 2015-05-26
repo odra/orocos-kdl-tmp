@@ -9,9 +9,7 @@ URL:        http://www.orocos.org/kdl/
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/%{commit}/%{name}-%{commit}.tar.gz
 
-# Unit test #4 (inertiatest) fails for ix86.  This is reported upstream:
-# https://github.com/orocos/orocos_kinematics_dynamics/issues/54
-# Once the issue is resolved, ix86 will be added.
+# ExcludeArch bug: BZ #1225215
 ExcludeArch: %{ix86}
 BuildRequires: cmake, eigen3-devel, doxygen, cppunit-devel
 Requires:   eigen3
