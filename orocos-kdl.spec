@@ -1,6 +1,6 @@
 Name:       orocos-kdl
 Version:    1.3.0
-Release:    5%{?dist}
+Release:    6%{?dist}
 Summary:    A framework for modeling and computation of kinematic chains
 
 License:    LGPLv2+
@@ -8,10 +8,10 @@ URL:        http://www.orocos.org/kdl/
 %global commit 2aa76640f0a1c5ac57946c20e844372578b55743
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/%{commit}/%{name}-%{commit}.tar.gz
+Patch0:     %{name}.ix86-tests.patch
 
-# ExcludeArch bug: BZ #1225215
-ExcludeArch: %{ix86}
 BuildRequires: cmake, eigen3-devel, doxygen, cppunit-devel
+BuildRequires: graphviz
 Requires:   eigen3
 
 %description
@@ -33,6 +33,7 @@ developing applications that use %{name}.
 
 %package        doc
 Summary:        Documentation for %{name}
+BuildArch:      noarch
 %description    doc
 The %{name}-doc package contains documentation for %{name}.
 
@@ -40,6 +41,7 @@ The %{name}-doc package contains documentation for %{name}.
 
 %prep
 %setup -q -n orocos_kinematics_dynamics-%{commit}
+%patch0 -p1
 
 
 %build
@@ -87,9 +89,12 @@ popd
 
 
 %changelog
+* Sat Jun 27 2015 Till Hofmann <hofmann@kbsg.rwth-aachen.de> - 1.3.0-6
+- Add upstream patch to fix tests on ix86, reenable ix86
+- Add build requirement for graphviz
+- Make doc a noarch package
 * Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
-
 * Tue May 26 2015 Till Hofmann <hofmann@kbsg.rwth-aachen.de> - 1.3.0-4
 - Move documentation into doc package
 * Thu May 21 2015 Till Hofmann <hofmann@kbsg.rwth-aachen.de> - 1.3.0-3
