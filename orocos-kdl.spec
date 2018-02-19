@@ -10,8 +10,13 @@ URL:        http://www.orocos.org/kdl/
 Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/%{commit}/%{name}-%{commit}.tar.gz
 Patch0:     %{name}.ix86-tests.patch
 
-BuildRequires: cmake, eigen3-devel, doxygen, cppunit-devel
-BuildRequires: graphviz
+BuildRequires:  cmake
+BuildRequires:  cppunit-devel
+BuildRequires:  doxygen
+BuildRequires:  eigen3-devel
+BuildRequires:  gcc-c++
+BuildRequires:  graphviz
+
 Requires:   eigen3
 
 %description
