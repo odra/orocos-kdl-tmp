@@ -1,13 +1,13 @@
 Name:       orocos-kdl
-Version:    1.3.1
-Release:    7%{?dist}
+Version:    1.4.0
+Release:    1%{?dist}
 Summary:    A framework for modeling and computation of kinematic chains
 
 License:    LGPLv2+
 URL:        http://www.orocos.org/kdl/
 %global commit a82743f7cc38e62e942be3f83cc4c2d1cc786021
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/%{commit}/%{name}-%{commit}.tar.gz
+Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/v%{version}/%{name}-%{version}.tar.gz
 Patch0:     %{name}.ix86-tests.patch
 
 BuildRequires:  cmake
@@ -45,7 +45,7 @@ The %{name}-doc package contains documentation for %{name}.
 
 
 %prep
-%setup -q -n orocos_kinematics_dynamics-%{commit}
+%setup -q -n orocos_kinematics_dynamics-%{version}
 %patch0 -p1
 
 
@@ -94,6 +94,11 @@ popd
 
 
 %changelog
+* Sun Apr 08 2018 Till Hofmann <thofmann@fedoraproject.org> - 1.4.0-1
+- Update to 1.4.0
+- Remove upstreamed patch
+- Update patch to increase failure threshold, fixes tests on i686
+
 * Thu Feb 08 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.1-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
