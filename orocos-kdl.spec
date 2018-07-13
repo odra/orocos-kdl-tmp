@@ -1,6 +1,6 @@
 Name:       orocos-kdl
 Version:    1.4.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    A framework for modeling and computation of kinematic chains
 
 License:    LGPLv2+
@@ -94,6 +94,9 @@ popd
 
 
 %changelog
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Sun Apr 08 2018 Till Hofmann <thofmann@fedoraproject.org> - 1.4.0-1
 - Update to 1.4.0
 - Remove upstreamed patch
