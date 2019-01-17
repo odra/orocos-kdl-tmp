@@ -74,10 +74,6 @@ make check
 popd
 
 
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
-
 %files
 %doc orocos_kdl/README
 %license orocos_kdl/COPYING
