@@ -1,6 +1,6 @@
 Name:       orocos-kdl
 Version:    1.4.0
-Release:    5%{?dist}
+Release:    6%{?dist}
 Summary:    A framework for modeling and computation of kinematic chains
 
 License:    LGPLv2+
@@ -42,6 +42,16 @@ BuildArch:      noarch
 %description    doc
 The %{name}-doc package contains documentation for %{name}.
 
+%package     -n python%{python3_pkgversion}-pykdl
+Summary:        Python module for %{name}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-sip-devel
+%{?python_provide:%python_provide python%{python3_pkgversion}-pykdl}
+
+%description -n python%{python3_pkgversion}-pykdl
+The python%{python3_pkgversion}-pykdl package contains the Python module
+for %{name}.
 
 
 %prep
@@ -61,10 +71,25 @@ rm doc/kdl.tag
 
 popd
 
+pushd python_orocos_kdl
+mkdir -p include
+ln -s ../../orocos_kdl/src include/kdl
+CXXFLAGS="${CXXFLAGS:-%optflags} -Iinclude" \
+  %cmake \
+  -DPYTHON_VERSION=3 \
+  .
+make %{?_smp_mflags}
+popd
+
 
 %install
 pushd orocos_kdl
 make install DESTDIR=%{buildroot}
+popd
+
+pushd python_orocos_kdl
+make install DESTDIR=%{buildroot}
+rm %{buildroot}%{_datadir}/python_orocos_kdl/package.xml
 popd
 
 
@@ -88,8 +113,14 @@ popd
 %files doc
 %doc orocos_kdl/doc/api/html
 
+%files -n python%{python3_pkgversion}-pykdl
+%{python3_sitearch}/PyKDL.so
+
 
 %changelog
+* Tue Mar 10 2020 Scott K Logan <logans@cottsay.net> - 1.4.0-6
+- Add python subpackage for PyKDL
+
 * Wed Jan 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
