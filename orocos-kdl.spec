@@ -1,6 +1,6 @@
 Name:       orocos-kdl
 Version:    1.4.0
-Release:    6%{?dist}
+Release:    7%{?dist}
 Summary:    A framework for modeling and computation of kinematic chains
 
 License:    LGPLv2+
@@ -118,6 +118,9 @@ popd
 
 
 %changelog
+* Tue May 26 2020 Miro Hrončok <mhroncok@redhat.com> - 1.4.0-7
+- Rebuilt for Python 3.9
+
 * Tue Mar 10 2020 Scott K Logan <logans@cottsay.net> - 1.4.0-6
 - Add python subpackage for PyKDL
 
