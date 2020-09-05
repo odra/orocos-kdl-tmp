@@ -1,14 +1,14 @@
 Name:       orocos-kdl
 Version:    1.4.0
-Release:    9%{?dist}
+Release:    10%{?dist}
 Summary:    A framework for modeling and computation of kinematic chains
 
 License:    LGPLv2+
 URL:        http://www.orocos.org/kdl/
-%global commit a82743f7cc38e62e942be3f83cc4c2d1cc786021
+%global commit a2a2dff5eae7671c2d8db23d1173f6bb3cff6a29
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
-Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:     %{name}.ix86-tests.patch
+Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
+Patch0:     orocos-kdl.pybind11.patch
 
 BuildRequires:  cmake
 BuildRequires:  cppunit-devel
@@ -46,7 +46,7 @@ The %{name}-doc package contains documentation for %{name}.
 Summary:        Python module for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-sip-devel
+BuildRequires:  python%{python3_pkgversion}-pybind11
 %{?python_provide:%python_provide python%{python3_pkgversion}-pykdl}
 
 %description -n python%{python3_pkgversion}-pykdl
@@ -55,47 +55,46 @@ for %{name}.
 
 
 %prep
-%setup -q -n orocos_kinematics_dynamics-%{version}
-%patch0 -p1
+%autosetup -p 1 -n orocos_kinematics_dynamics-%{commit}
 
 
 %build
 pushd orocos_kdl
 %cmake \
-  -DENABLE_TESTS:BOOL=ON \
-  .
-make %{?_smp_mflags}
-make %{?_smp_mflags} docs
+  -DENABLE_TESTS:BOOL=ON
+%cmake_build
+%cmake_build --target docs
 # remove doxygen tag file, it is faulty and we do not need it
-rm doc/kdl.tag
+rm %{_vpath_builddir}/doc/kdl.tag
 
 popd
 
 pushd python_orocos_kdl
-mkdir -p include
-ln -s ../../orocos_kdl/src include/kdl
+mkdir -p %{_vpath_builddir}/include/kdl
+cp -a ../orocos_kdl/src/* %{_vpath_builddir}/include/kdl
+cp -a ../orocos_kdl/%{_vpath_builddir}/src/* %{_vpath_builddir}/include/kdl
+ln -s ../../../orocos_kdl/src %{_vpath_builddir}/include/kdl
 CXXFLAGS="${CXXFLAGS:-%optflags} -Iinclude" \
   %cmake \
-  -DPYTHON_VERSION=3 \
-  .
-make %{?_smp_mflags}
+  -DPYTHON_VERSION=3
+%cmake_build
 popd
 
 
 %install
 pushd orocos_kdl
-make install DESTDIR=%{buildroot}
+%cmake_install
 popd
 
 pushd python_orocos_kdl
-make install DESTDIR=%{buildroot}
+%cmake_install
 rm %{buildroot}%{_datadir}/python_orocos_kdl/package.xml
 popd
 
 
 %check
 pushd orocos_kdl
-make check
+%cmake_build --target check
 popd
 
 
@@ -111,13 +110,18 @@ popd
 %{_libdir}/pkgconfig/*
 
 %files doc
-%doc orocos_kdl/doc/api/html
+%doc orocos_kdl/%{_vpath_builddir}/doc/api/html
 
 %files -n python%{python3_pkgversion}-pykdl
 %{python3_sitearch}/PyKDL.so
 
 
 %changelog
+* Sat Sep 05 2020 Till Hofmann <thofmann@fedoraproject.org> - 1.4.0-10
+- Adapt to cmake out-of-source builds
+- Switch to pybind11 to fix FTBFS
+- Remove unneeded patch
+
 * Sat Aug 01 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-9
 - Second attempt - Rebuilt for
   https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild

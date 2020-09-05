@@ -1,0 +1,21 @@
+diff --color -ur orocos_kinematics_dynamics-a2a2dff5eae7671c2d8db23d1173f6bb3cff6a29/python_orocos_kdl/CMakeLists.txt orocos_kinematics_dynamics-a2a2dff5eae7671c2d8db23d1173f6bb3cff6a29.pybind11/python_orocos_kdl/CMakeLists.txt
+--- orocos_kinematics_dynamics-a2a2dff5eae7671c2d8db23d1173f6bb3cff6a29/python_orocos_kdl/CMakeLists.txt	2020-08-31 21:11:58.000000000 +0200
++++ orocos_kinematics_dynamics-a2a2dff5eae7671c2d8db23d1173f6bb3cff6a29.pybind11/python_orocos_kdl/CMakeLists.txt	2020-09-05 15:34:46.474818459 +0200
+@@ -19,7 +19,7 @@
+ find_package(PythonLibs ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR} REQUIRED)
+ # get_python_lib in python3 produces path which isn't in sys.path: https://bugs.launchpad.net/ubuntu/+source/python3-stdlib-extensions/+bug/1832215
+ # execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True, prefix=''))" OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+-set(PYTHON_SITE_PACKAGES_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/dist-packages")
++set(PYTHON_SITE_PACKAGES_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages")
+ set(LIBRARY_NAME "PyKDL")
+ 
+ message(DEPRECATION "PyKDL has been moved to PyBind11. PyKDL based on SIP might become depracted in the (near) future. To keep using the SIP based version set 'BUILD_PYKDL_PYBIND11' to OFF.")
+@@ -27,7 +27,7 @@
+ option(BUILD_PYKDL_PYBIND11 "Use PyBind11 instead of SIP" ON)
+ if (BUILD_PYKDL_PYBIND11)
+   SET(PYTHON_MODULE_EXTENSION ".so")
+-  add_subdirectory(pybind11)
++  find_package(pybind11)
+   pybind11_add_module(${LIBRARY_NAME}
+     PyKDL/pybind11/PyKDL.h
+     PyKDL/pybind11/PyKDL.cpp
