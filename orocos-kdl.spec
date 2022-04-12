@@ -1,14 +1,14 @@
+%global sover 1.5
 Name:       orocos-kdl
-Version:    1.4.0
-Release:    14%{?dist}
+Version:    1.5.1
+Release:    1%{?dist}
 Summary:    A framework for modeling and computation of kinematic chains
 
 License:    LGPLv2+
-URL:        http://www.orocos.org/kdl/
-%global commit a2a2dff5eae7671c2d8db23d1173f6bb3cff6a29
-%global shortcommit %(c=%{commit}; echo ${c:0:7})
-Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/%{commit}/%{name}-%{shortcommit}.tar.gz
+URL:        http://www.orocos.org/kdl.html
+Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/v%{version}/%{name}-%{version}.tar.gz
 Patch0:     orocos-kdl.pybind11.patch
+Patch1:     orocos-kdl.python-site-packages.patch
 
 BuildRequires:  cmake
 BuildRequires:  cppunit-devel
@@ -55,7 +55,7 @@ for %{name}.
 
 
 %prep
-%autosetup -p 1 -n orocos_kinematics_dynamics-%{commit}
+%autosetup -p 1 -n orocos_kinematics_dynamics-%{version}
 
 
 %build
@@ -76,6 +76,7 @@ cp -a ../orocos_kdl/%{_vpath_builddir}/src/* %{_vpath_builddir}/include/kdl
 ln -s ../../../orocos_kdl/src %{_vpath_builddir}/include/kdl
 CXXFLAGS="${CXXFLAGS:-%optflags} -Iinclude" \
   %cmake \
+  -DPYTHON_SITE_PACKAGES_INSTALL_DIR=%{python3_sitearch} \
   -DPYTHON_VERSION=3
 %cmake_build
 popd
@@ -88,7 +89,6 @@ popd
 
 pushd python_orocos_kdl
 %cmake_install
-rm %{buildroot}%{_datadir}/python_orocos_kdl/package.xml
 popd
 
 
@@ -99,9 +99,9 @@ popd
 
 
 %files
-%doc orocos_kdl/README
+%doc README.md
 %license orocos_kdl/COPYING
-%{_libdir}/*.so.*
+%{_libdir}/*.so.%{sover}*
 
 %files devel
 %{_includedir}/*
@@ -117,6 +117,9 @@ popd
 
 
 %changelog
+* Tue Apr 12 2022 Till Hofmann <thofmann@fedoraproject.org> - 1.5.1-1
+- Update to 1.5.1
+
 * Thu Jan 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-14
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
