@@ -4,7 +4,7 @@ Version:    1.5.1
 Release:    %autorelease
 Summary:    A framework for modeling and computation of kinematic chains
 
-License:    LGPLv2+
+License:    LGPL-2.0-or-later
 URL:        http://www.orocos.org/kdl.html
 Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/v%{version}/%{name}-%{version}.tar.gz
 Patch0:     orocos-kdl.pybind11.patch
