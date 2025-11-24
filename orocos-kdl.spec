@@ -1,14 +1,12 @@
 %global sover 1.5
 Name:       orocos-kdl
-Version:    1.5.1
+Version:    1.5.3
 Release:    %autorelease
 Summary:    A framework for modeling and computation of kinematic chains
 
 License:    LGPL-2.0-or-later
 URL:        http://www.orocos.org/kdl.html
-Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:     orocos-kdl.pybind11.patch
-Patch1:     orocos-kdl.python-site-packages.patch
+Source0:    https://github.com/orocos/orocos_kinematics_dynamics/archive/refs/tags/%{version}.tar.gz
 
 BuildRequires:  cmake
 BuildRequires:  cppunit-devel
@@ -113,7 +111,7 @@ popd
 %doc orocos_kdl/%{_vpath_builddir}/doc/api/html
 
 %files -n python%{python3_pkgversion}-pykdl
-%{python3_sitearch}/PyKDL.so
+%{python3_sitearch}/PyKDL*.so
 
 
 %changelog
