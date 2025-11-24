@@ -1,0 +1,12 @@
+diff --color -ur orocos_kinematics_dynamics-1.5.1/python_orocos_kdl/CMakeLists.txt orocos_kinematics_dynamics-1.5.1.pybind11/python_orocos_kdl/CMakeLists.txt
+--- orocos_kinematics_dynamics-1.5.1/python_orocos_kdl/CMakeLists.txt	2021-09-12 08:58:27.000000000 +0200
++++ orocos_kinematics_dynamics-1.5.1.pybind11/python_orocos_kdl/CMakeLists.txt	2022-04-12 14:43:07.095815770 +0200
+@@ -46,7 +46,7 @@
+   set(PYTHON_MODULE_EXTENSION ".so")
+ endif()
+ 
+-add_subdirectory(pybind11)
++find_package(pybind11)
+ pybind11_add_module(${LIBRARY_NAME}
+   PyKDL/PyKDL.h
+   PyKDL/PyKDL.cpp
